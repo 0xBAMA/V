@@ -6,7 +6,7 @@ Some shapes to make:
 http://mathworld.wolfram.com/SteinerChain.html
 >think about this one for wheels, to have visual variation of wheel surface
 
-
+>----------------------------------------------------------
 
 http://mathworld.wolfram.com/ScherksMinimalSurfaces.html
 
@@ -45,7 +45,7 @@ http://mathworld.wolfram.com/NeckerCube.html
 
 
 
-
+>-----------------------------------------------
 
 
 
