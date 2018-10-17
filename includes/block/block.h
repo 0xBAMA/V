@@ -12,6 +12,16 @@ class Block{
 		int get_y_res(){return y_res;}
 		int get_z_res(){return z_res;}
 
+
+		//This kind of access is still valuable - I want to keep this function intact, for simple output.
+		//I will be doing some kind of mapping here so that I can have the block centered at the origin,
+		//rather than having its corner butted up against the origin.
+
+		//There will be some work to do to convert this, but I want to make the array one-dimensional to
+		//decrease the overhead there is with the memory usage. In essense, I want to maintain the x,y,z
+		//indexing interface, but within those functions get/set, decode that into a location in a long
+		//1-dimensional array. Not sure exactly what this will look like.
+
 		void set_data_by_index(int x,int y,int z,int set){
 
 			//validate the input - make sure you are in the block

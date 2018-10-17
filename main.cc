@@ -53,6 +53,8 @@ int main(){
 	
 	exit_salutations(&main_block);
 
+	cout << "size of ulong " << sizeof(unsigned long long int) << endl;
+
 	//std::string s;
 	//std::cout << endl << "max number of characters in a string " << s.max_size() << endl;
 

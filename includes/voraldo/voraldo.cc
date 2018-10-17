@@ -4,6 +4,7 @@
 #include <sstream>
 #include <math.h>
 #include <vector>
+#include <bitset>
 
 
 //   ██▒   █▓ ▒█████   ██▀███   ▄▄▄       ██▓    ▓█████▄  ▒█████  
@@ -73,8 +74,7 @@ void Voraldo_object::load_block_from_file(string filename){
 
 	tempx = j.value("xdim",0);
 	tempy = j.value("ydim",0); //take some specific values from the json input file
-	tempz = j.value("zdim",0);	//the formatting is j.value("key name", "default value if key not foundg")
-
+	tempz = j.value("zdim",0);	//the formatting is j.value("key name", "default value if key not found")
 
 	data = new Block(tempx,tempy,tempz); //define the block using those values
 
@@ -82,39 +82,65 @@ void Voraldo_object::load_block_from_file(string filename){
 
 	savetype = j.value("image_output_type","bmp");
 
-	string current_slice;
-	string current_row;
-
-	unsigned char dot_holder; //strips the string of the periods
-
-	int value;
-
-	for(int i = 0; i < tempz; i++){				//slices - i = z
+	std::string filetype = j.value("filetype","not found"); 
 
 
-		current_slice = j.value("slice[" + std::to_string(i) + "]","load failed");
-		nlohmann::json j2 = nlohmann::json::parse(current_slice);	
-		//grab the string, and recursively parse it as a JSON object
-		//within the JSON object loaded from the input file.
 
-		for(int j = 0; j < tempy; j++){			//rows 	 - j = y
+	if(filetype == "uncompressed, using integers"){
 
-			if(current_slice != "load failed");
-			current_row = j2.value("row[" + std::to_string(j) + "]","load failed");
-			std::stringstream ss;
+		string current_slice;
+		string current_row;
 
-			ss << current_row;	//FIFO style
+		unsigned char dot_holder; //strips the string of the periods
 
-			for(int k = 0; k < tempx; k++){		//cells  - k = x
+		int value;
 
-				ss >> value;	//read out entries
+		for(int i = 0; i < tempz; i++){				//slices - i = z
 
-				if(!ss.eof())
-					ss >> dot_holder;	//take in the dot 
 
-				data->set_data_by_index(k,j,i,value);
+			current_slice = j.value("slice[" + std::to_string(i) + "]","load failed");
+			nlohmann::json j2 = nlohmann::json::parse(current_slice);	
+			//grab the string, and recursively parse it as a JSON object
+			//within the JSON object loaded from the input file.
+
+			for(int j = 0; j < tempy; j++){			//rows 	 - j = y
+
+				if(current_slice != "load failed");
+				current_row = j2.value("row[" + std::to_string(j) + "]","load failed");
+				std::stringstream ss;
+
+				ss << current_row;	//FIFO style
+
+				for(int k = 0; k < tempx; k++){		//cells  - k = x
+
+					ss >> value;	//read out entries
+
+					if(!ss.eof())
+						ss >> dot_holder;	//take in the dot 
+
+					data->set_data_by_index(k,j,i,value);
+				}
 			}
 		}
+	}else if(filetype == "compressed using unsigned characters instead of ints"){
+		//to be implemented
+
+		//but cast int to unsigned char before output - this is fine because we 
+		//are only dealing with 0-255 as possible states.
+
+	}else if(filetype == "compressed bitwise using unsigned long long ints"){
+		//to be implemented
+
+		//this breaks the data up into two pieces - The first piece is a compressed array that gives me boolean occupancy
+		//data, for every cell in the array explicitly. The second piece is a 1 dimensional list of states, which will be
+		//interpreted at the same time, we go through a deterministic traversal of the space, so the first cell encountered
+		//will always be the first cell encountered, allowing it to be consistently interpreted the same way every time.
+
+		//in the other representations, the state data is explicitly defined, and the occupancy data was defined implicitly
+		//by the fact the the values stored are nonzero.
+
+	}else if(filetype == "not found"){
+		cout << "filetype information not included in save file." << endl;
 	}
 }
 
@@ -128,7 +154,10 @@ void Voraldo_object::dump_that_shit_in_a_file(string filename){
 //  ╚════██║    ██╔══██║    ╚██╗ ██╔╝    ██╔══╝  
 //  ███████║    ██║  ██║     ╚████╔╝     ███████╗
 //  ╚══════╝    ╚═╝  ╚═╝      ╚═══╝      ╚══════╝
-
+	//Compression - using the bits of an integer? ok here's the idea - keep occupancy information like this,
+	//bits indicating whether or not there will be data there. Then in some kind of ordered format, 1 dimensional,
+	//keep all the voxels that are indeed occupied, according to the compressed data. This could really, 
+	//really reduce filesize.
 //-------------------------------------------------------------------------------------------------
 
 	//As is the way, we had some fun naming the save function.
@@ -279,6 +308,9 @@ void Voraldo_object::display(std::string display_type){
 		img.display("VORALDO");             // Display the image in a display window.
 	}else if(display_type == "raycast"){
 		//This will require some time.
+
+		//the information about the camera
+		//	>position,
 	}
 }
 
