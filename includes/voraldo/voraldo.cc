@@ -1,10 +1,4 @@
 #include "../voraldo/voraldo.h"
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <math.h>
-#include <vector>
-#include <bitset>
 
 
 //   ██▒   █▓ ▒█████   ██▀███   ▄▄▄       ██▓    ▓█████▄  ▒█████  
@@ -47,7 +41,7 @@ Voraldo_object::Voraldo_object(int x,int y,int z){
 
 //-------------------------------------------------------------------------------------------------
 
-void Voraldo_object::load_block_from_file(string filename){
+void Voraldo_object::load_block_from_file(std::string filename){
 
 //  ██╗          ██████╗      █████╗     ██████╗ 
 //  ██║         ██╔═══██╗    ██╔══██╗    ██╔══██╗
@@ -88,10 +82,10 @@ void Voraldo_object::load_block_from_file(string filename){
 
 	if(filetype == "uncompressed, using integers"){
 
-		string current_slice;
-		string current_row;
+		std::string current_slice;
+		std::string current_row;
 
-		unsigned char dot_holder; //strips the string of the periods
+		unsigned char dot_holder; //strips the std::string of the periods
 
 		int value;
 
@@ -100,7 +94,7 @@ void Voraldo_object::load_block_from_file(string filename){
 
 			current_slice = j.value("slice[" + std::to_string(i) + "]","load failed");
 			nlohmann::json j2 = nlohmann::json::parse(current_slice);	
-			//grab the string, and recursively parse it as a JSON object
+			//grab the std::string, and recursively parse it as a JSON object
 			//within the JSON object loaded from the input file.
 
 			for(int j = 0; j < tempy; j++){			//rows 	 - j = y
@@ -140,13 +134,13 @@ void Voraldo_object::load_block_from_file(string filename){
 		//by the fact the the values stored are nonzero.
 
 	}else if(filetype == "not found"){
-		cout << "filetype information not included in save file." << endl;
+		std::cout << "filetype information not included in save file." << std::endl;
 	}
 }
 
 //-------------------------------------------------------------------------------------------------
 
-void Voraldo_object::dump_that_shit_in_a_file(string filename){
+void Voraldo_object::dump_that_shit_in_a_file(std::string filename){
 
 //  ███████╗     █████╗     ██╗   ██╗    ███████╗
 //  ██╔════╝    ██╔══██╗    ██║   ██║    ██╔════╝
@@ -167,7 +161,7 @@ void Voraldo_object::dump_that_shit_in_a_file(string filename){
 	//object-oriented input and output files. 
 
 	nlohmann::json j;
-	string slicestring;
+	std::string slicestring;
 
 	j["xdim"] = data->get_x_res();
 	j["ydim"] = data->get_y_res();
@@ -178,18 +172,18 @@ void Voraldo_object::dump_that_shit_in_a_file(string filename){
 
 	for(int i = 0; i < data->get_z_res(); i++){	//the block data has more formatting i = z
 
-		slicestring.clear();		//make sure there's nothing in the string for this iteration
+		slicestring.clear();		//make sure there's nothing in the std::string for this iteration
 
 		nlohmann::json j2; //this bitch gets declared every time you deal with a new slice
 
 		for(int j = 0; j < data->get_y_res(); j++){ //j = y
-			string rowstring;
+			std::string rowstring;
 			for(int k = 0; k < data->get_x_res(); k++){ //k = x
 
 				int state_of_current_entry = data->get_data_by_index(k,j,i);
 
 				if(state_of_current_entry > 255){
-					cout << "clipped on output " << endl;
+					std::cout << "clipped on output " << std::endl;
 					state_of_current_entry = 255;
 				}
 
@@ -317,7 +311,7 @@ void Voraldo_object::display(std::string display_type){
 
 //-------------------------------------------------------------------------------------------------
 
-void Voraldo_object::draw(string drawtype, double* parameters){
+void Voraldo_object::draw(std::string drawtype, double* parameters){
 
 //  ██████╗     ██████╗      █████╗     ██╗    ██╗
 //  ██╔══██╗    ██╔══██╗    ██╔══██╗    ██║    ██║
@@ -341,7 +335,7 @@ void Voraldo_object::draw(string drawtype, double* parameters){
 	//function. I am somewhat fuzzy on how this is handled specifically in OpenGL - I believe there is a function
 	//that moves the image data from the framebuffer to the screen. In any event, this is how we're handling it.
 
-	//draw_from_file(string filename)? what would this be like - draw calls spelled out sequentially? good idea or no?
+	//draw_from_file(std::string filename)? what would this be like - draw calls spelled out sequentially? good idea or no?
 
 	int drawtype_int;
 
@@ -350,7 +344,7 @@ void Voraldo_object::draw(string drawtype, double* parameters){
 	int i = 0;	//we dropped the loop control variable in the conversion to a range-based for loop. 
 	//Wonder if there's a better solution.
 
-	for(auto ref_string : s){	//A switch statement doesn't support strings as control variables. I've only just seen this type of
+	for(auto ref_string : s){	//A switch statement doesn't support std::strings as control variables. I've only just seen this type of
 	 	if (ref_string == drawtype){	// range-based for-loop. I'm not going to remember the number for each drawing function -
 	 		drawtype_int = i;			//as a result, this seemed like a concise way to translate.
 	 	}
@@ -620,7 +614,7 @@ void Voraldo_object::draw(string drawtype, double* parameters){
 		}
 //-------------------------------------------------------------------------------------------------
 		default:
-			std::cout << "Invalid argument passed to draw function" << endl;
+			std::cout << "Invalid argument passed to draw function" << std::endl;
 			break;
 
 	}
@@ -694,7 +688,7 @@ void Voraldo_object::draw_rectangular_prism(vec mintuple, vec maxtuple, int stat
 	//assumes you know what you're doing, calling the function
 
 	if(mintuple[0] > maxtuple[0] || mintuple[1] > maxtuple[1] || mintuple[2] > maxtuple[2]){
-		std::cout << "trouble is present in the rectangular prism function" << endl;
+		std::cout << "trouble is present in the rectangular prism function" << std::endl;
 		return;
 	}
 
@@ -1016,7 +1010,7 @@ void Voraldo_object::draw_dotted_capsule(vec point1, vec point2, double length_o
 	double current_iteration = 0.0;
 
 	if(radius > 3.0){
-		std::cout << "shes gonna be a thick one" << endl;
+		std::cout << "shes gonna be a thick one" << std::endl;
 	}
 
 	//everybody say 'hi, norm' - he represents a vector that starts at point 1 and goes to point 2
@@ -1139,5 +1133,45 @@ RGB Voraldo_object::get_color_for_state(int state){
 				//...
 
 
+	}
+}
+
+
+//   ▄▄▄▄    ██▓     ▒█████   ▄████▄   ██ ▄█▀
+//  ▓█████▄ ▓██▒    ▒██▒  ██▒▒██▀ ▀█   ██▄█▒ 
+//  ▒██▒ ▄██▒██░    ▒██░  ██▒▒▓█    ▄ ▓███▄░ 
+//  ▒██░█▀  ▒██░    ▒██   ██░▒▓▓▄ ▄██▒▓██ █▄ 
+//  ░▓█  ▀█▓░██████▒░ ████▓▒░▒ ▓███▀ ░▒██▒ █▄
+//  ░▒▓███▀▒░ ▒░▓  ░░ ▒░▒░▒░ ░ ░▒ ▒  ░▒ ▒▒ ▓▒
+//  ▒░▒   ░ ░ ░ ▒  ░  ░ ▒ ▒░   ░  ▒   ░ ░▒ ▒░
+//   ░    ░   ░ ░   ░ ░ ░ ▒  ░        ░ ░░ ░ 
+//   ░          ░  ░    ░ ░  ░ ░      ░  ░   
+//        ░                  ░               
+
+Block::Block(int x, int y, int z){
+	//this function initializes a block of the specified
+	//dimensions, and fills it with zeroes
+
+	//the block will have x * y * z voxels, but the cells
+	//will be indexed from 0 to x-1, 0 to y-1, 0 to z-1
+
+	x_res = x;
+	y_res = y;
+	z_res = z;
+
+	data = new int**[x_res];
+	for(int i = 0; i < x_res; i++){
+		data[i] = new int*[y_res];
+		for(int j = 0; j < y_res; j++){
+			data[i][j] = new int[z_res];
+			for(int k = 0; k < z_res; k++){
+				int randcheck = rand()%696;
+				if(randcheck == 69){
+					data[i][j][k] = rand()%256;
+				}
+				//data[i][j][k] = rand()%256;
+				//data[i][j][k] = 0;
+			}
+		}
 	}
 }
