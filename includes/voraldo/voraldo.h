@@ -25,6 +25,7 @@
 
 using vec = linalg::aliases::double3;
 using mat = linalg::aliases::double4x4;
+using intvec = linalg::aliases::int3;
 using veContainer = std::vector<vec>;
 
 
@@ -101,7 +102,7 @@ class Block{
 			}
 		}
 
-		//int get_data_at_point()
+		int get_data_at_point(vec test_point);
 
 	private:
 		int x_res; //how many voxels along x axis
@@ -163,7 +164,8 @@ class Voraldo_object{
 	private:
 		Block* data;
 		int current_palette;
-		std::string savetype;
+		std::string savetype; //bmp
+		std::string filetype; //load/save block shit yes I KNOW IT'S AMBIGUOUS
 
 		//Private draw functions -
 		//The "draw" function will call these.

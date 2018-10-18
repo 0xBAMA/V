@@ -11,6 +11,13 @@ int main(){
 	//Voraldo_object main_block;
 	//main_block.load_block_from_file("example.txt");
 
+	//do a for loop
+
+	// for(int loopint = 0; loopint < 150; loopint++){
+	// 	double params[] = {double(rand()%256),double(rand()%256),double(rand()%256),double(rand()%12),118.0};
+	// 	main_block.draw("sphere",params);
+	// }
+
 
 	double elipsoid_params[] = {128.0,128.0,128.0,64.0,16.0,16.0,115.0};
 	//			[origin,radii,state]
@@ -53,7 +60,7 @@ int main(){
 	
 	exit_salutations(&main_block);
 
-	std::cout << "size of ulong " << sizeof(unsigned long long int) << std::endl;
+	//std::cout << "size of ullong " << sizeof(unsigned long long int) << std::endl;
 
 	//std::string s;
 	//std::cout << std::endl << "max number of characters in a string " << s.max_size() << std::endl;

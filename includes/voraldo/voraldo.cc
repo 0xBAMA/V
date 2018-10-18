@@ -37,6 +37,7 @@ Voraldo_object::Voraldo_object(int x,int y,int z){
 	current_palette = 0;
 
 	savetype = "bmp";
+	filetype = "uncompressed, using integers";
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -49,7 +50,6 @@ void Voraldo_object::load_block_from_file(std::string filename){
 //  ██║         ██║   ██║    ██╔══██║    ██║  ██║
 //  ███████╗    ╚██████╔╝    ██║  ██║    ██████╔╝
 //  ╚══════╝     ╚═════╝     ╚═╝  ╚═╝    ╚═════╝
-
 //-------------------------------------------------------------------------------------------------
 
 
@@ -265,7 +265,7 @@ void Voraldo_object::display(std::string display_type){
 //	|
 //	v 	0 to 512, ycoord
 
-		CImg<int> img(800,800,1,3,0);;  //declare image with three colors per pixel, one channel. 
+		CImg<int> img(800,800,1,3,0);  //declare image with three colors per pixel, one channel. 
 		//full of zero values, which are doubles, for no real reason
 
 		int curr_x = 400;
@@ -283,6 +283,12 @@ void Voraldo_object::display(std::string display_type){
 						img(curr_x,curr_y,0) = temp.red;
 						img(curr_x,curr_y,1) = temp.green;
 						img(curr_x,curr_y,2) = temp.blue;
+					}
+
+					if(state == 118){
+						img(curr_x,curr_y,0) = 255-y;
+						img(curr_x,curr_y,1) = 255-y;
+						img(curr_x,curr_y,2) = 255-y;
 					}
 
 					curr_x--;
@@ -688,7 +694,9 @@ void Voraldo_object::draw_rectangular_prism(vec mintuple, vec maxtuple, int stat
 	//assumes you know what you're doing, calling the function
 
 	if(mintuple[0] > maxtuple[0] || mintuple[1] > maxtuple[1] || mintuple[2] > maxtuple[2]){
-		std::cout << "trouble is present in the rectangular prism function" << std::endl;
+		std::cout << "Trouble is present in the rectangular prism function -" << std::endl;
+		std::cout << "What folly is this before me? You're an asshole." << std::endl;
+		//The day I'll be happy is the day that computers just give error messages like this
 		return;
 	}
 
@@ -772,6 +780,7 @@ void Voraldo_object::draw_triangle(vec point1, vec point2, vec point3, int state
 					//     ██║   ██╔══██╗██║██╔══██║██║╚██╗██║██║   ██║██║     ██╔══╝  
 					//     ██║   ██║  ██║██║██║  ██║██║ ╚████║╚██████╔╝███████╗███████╗
 					//     ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝ ╚══════╝╚══════╝
+					//this remains unfinished
 
 	//find the max element, and prepare for the later calculations
 	vec line1_2 = point2-point1;		vec line2_1 = point1-point2;
@@ -1173,5 +1182,32 @@ Block::Block(int x, int y, int z){
 				//data[i][j][k] = 0;
 			}
 		}
+	}
+}
+
+int Block::get_data_at_point(vec test_point){
+	intvec index;
+	intvec extent;
+
+	extent[0] = x_res;
+	extent[1] = y_res;
+	extent[2] = z_res;
+
+	bool fuckit = false;
+
+	for(int dim = 0; dim <=2; dim++){ //run once per dimension
+		if(std::abs(test_point[dim] <= 1.0)){
+			double curr_dim_extent = test_point[dim] + 1.0; //going from the range -1,1 to the range 0,2
+			index[dim] = int(curr_dim_extent * floor(extent[dim]/2)); //map the range 0,2 to 0,max_index
+		}else{
+			//at least one dimension of this point is outside the range. forget about it
+			fuckit = true;
+		}
+	}
+
+	if(!fuckit){
+		return get_data_by_index(index[0],index[1],index[2]);
+	}else{
+		return 0;
 	}
 }

@@ -1,12 +1,62 @@
 # Voraldo
+voxel rendering project by Jon Baker
 
 Some shapes to make:
 
 
 http://mathworld.wolfram.com/SteinerChain.html
->think about this one for wheels, to have visual variation of wheel surface
+>think about this one for wheels, to have visual variation of wheel surface.
+>the more I think about this, the more potential I think it has - many small spheres
+>would allow for tread
 
 >----------------------------------------------------------
+
+
+upcoming work
+
+http://www.cplusplus.com/reference/bitset/bitset/to_ullong/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 http://mathworld.wolfram.com/ScherksMinimalSurfaces.html
 
@@ -73,3 +123,11 @@ Other Items of note:
 http://mathworld.wolfram.com/StrangsStrangeFigures.html
 
 http://mathworld.wolfram.com/topics/MathematicalImages.html
+
+
+http://www.imagemagick.org/script/index.php
+
+https://stackoverflow.com/questions/31971652/best-way-to-amplify-the-size-of-a-raycast
+
+https://www.reddit.com/r/roguelikes/comments/95riv1/original_wolfenstein_maps_have_ansibased_editing/
+
