@@ -12,16 +12,16 @@ http://mathworld.wolfram.com/SteinerChain.html
 >----------------------------------------------------------
 
 
-upcoming work
+#upcoming work
 
 http://www.cplusplus.com/reference/bitset/bitset/to_ullong/
 
 
 
+>----------------------------------------------------------
 
 
-
-
+#other shapes to make:
 
 
 
