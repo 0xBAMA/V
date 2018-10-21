@@ -151,10 +151,16 @@ http://mathworld.wolfram.com/StrangsStrangeFigures.html
 
 http://mathworld.wolfram.com/topics/MathematicalImages.html
 
+>------
+
 
 http://www.imagemagick.org/script/index.php
 
 https://stackoverflow.com/questions/31971652/best-way-to-amplify-the-size-of-a-raycast
 
 https://www.reddit.com/r/roguelikes/comments/95riv1/original_wolfenstein_maps_have_ansibased_editing/
+
+>-----
+
+https://www.reddit.com/r/gamedev/comments/57x7n3/really_cool_fake_3d_in_gamemaker_by_the_creator/
 
